@@ -1,14 +1,16 @@
 import asyncio
+
 from aiogram import Bot, Dispatcher
+from aiogram.client.session.aiohttp import AiohttpSession
 
-from handlers import bot_messages, user_commands, questionaire
 from callbacks import pagination
-
 from config_reader import config
+from handlers import bot_messages, user_commands, questionaire
 
 
 async def main():
-    bot = Bot(config.bot_token.get_secret_value(), parse_mode="HTML")
+    session = AiohttpSession(proxy="http://proxy.server:3128/")
+    bot = Bot(config.bot_token.get_secret_value(), parse_mode="HTML", session=session)
     dp = Dispatcher()
 
     dp.include_routers(
