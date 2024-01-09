@@ -26,7 +26,7 @@ async def get_random_number(message: Message, command: CommandObject):
 
 @router.message(F.text == "play")
 async def play_games(message: Message):
-    x = await message.answer_dice(DiceEmoji.BOWLING)
+    x = await message.answer_dice(DiceEmoji.BOWLING) # DICE
     print(x.dice.value)
 
 @router.message(Command("test"))
