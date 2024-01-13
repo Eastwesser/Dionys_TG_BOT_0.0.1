@@ -16,7 +16,7 @@ async def greetings(message: Message):
 async def echo(message: Message):
     msg = message.text.lower()
     smiles = await get_json("smiles.json")
-    calculator_mode = False
+
     if msg == "ссылки":
         await message.answer("Вот ваши ссылки:", reply_markup=inline.links)
     elif msg == "спец. кнопки":
@@ -24,12 +24,8 @@ async def echo(message: Message):
     elif msg == "дионис":
         await message.answer("Выберите функцию Диониса:", reply_markup=reply.dionys)
     elif msg == "калькулятор":
-        calculator_mode = True
         await message.answer("Введите выражение:", reply_markup=builders.calc())
     elif msg == "смайлики":
         await message.answer(f"{smiles[0][0]} <b>{smiles[0][1]}</b>", reply_markup=fabrics.paginator())
     elif msg == "назад":
         await message.answer("Вы перешли в главное меню!", reply_markup=reply.main)
-    elif msg == '=' and calculator_mode == True:
-        calculator_mode = False
-        await message.answer("0", reply_markup=reply.main)

@@ -1,9 +1,11 @@
+import ast
 import random
 
 from aiogram import Router, Bot, F
-from aiogram.types import Message
-from aiogram.filters import Command, CommandObject, CommandStart
+from aiogram import types
 from aiogram.enums.dice_emoji import DiceEmoji
+from aiogram.filters import Command, CommandObject, CommandStart
+from aiogram.types import Message
 
 from keyboards import reply
 
@@ -17,17 +19,44 @@ async def start(message: Message):
                          reply_markup=reply.main)
 
 
-@router.message(Command(commands=["rn", "random-number"])) # /rn 1-100
+@router.message(Command(commands=["rn", "random-number"]))  # /rn 1-100
 async def get_random_number(message: Message, command: CommandObject):
     a, b = [int(n) for n in command.args.split("-")]
     rnum = random.randint(a, b)
 
     await message.reply(f"Random number: {rnum}")
 
+
 @router.message(F.text == "play")
 async def play_games(message: Message):
-    x = await message.answer_dice(DiceEmoji.BOWLING) # DICE
+    x = await message.answer_dice(DiceEmoji.BOWLING)
     print(x.dice.value)
+
+
+async def calculate_expression(expression):
+    try:
+        # Парсим введенное выражение без использования eval
+        parsed_expr = ast.parse(expression, mode='eval')
+
+        # Запускаем выполнение выражения в безопасной среде
+        result = eval(compile(parsed_expr, filename="<string>", mode='eval'))
+
+        return result
+    except Exception as e:
+        return f"Ошибка: {str(e)}"
+
+
+@router.message(commands=['calculate'])
+async def calculate(message: types.Message):
+    # Получаем введенное пользователем выражение
+    expression = message.text.replace('/calculate', '').strip()
+
+    # Выполняем расчет с помощью нашей функции
+    result = await calculate_expression(expression)
+
+    # Отправляем результат пользователю
+    await message.reply(f"Ваш результат: {result}")
+
 
 @router.message(Command("test"))
 async def test(message: Message, bot: Bot):
