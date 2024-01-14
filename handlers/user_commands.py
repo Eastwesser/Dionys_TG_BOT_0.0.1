@@ -32,6 +32,10 @@ async def play_games(message: Message):
     x = await message.answer_dice(DiceEmoji.BOWLING)
     print(x.dice.value)
 
+@router.message(F.text == "play1")
+async def play_games1(message: Message):
+    x = await message.answer_dice(DiceEmoji.DICE)
+    print(x.dice.value)
 
 async def calculate_expression(expression):
     try:
