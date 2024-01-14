@@ -32,11 +32,14 @@ async def play_games(message: Message):
     x = await message.answer_dice(DiceEmoji.BOWLING)
     print(x.dice.value)
 
+
 @router.message(F.text == "play1")
 async def play_games1(message: Message):
     x = await message.answer_dice(DiceEmoji.DICE)
     print(x.dice.value)
 
+
+@router.message(Command(commands=['calculate']))
 async def calculate_expression(expression):
     try:
         # Парсим введенное выражение без использования eval
@@ -50,7 +53,6 @@ async def calculate_expression(expression):
         return f"Ошибка: {str(e)}"
 
 
-@router.message(commands=['calculate'])
 async def calculate(message: types.Message):
     # Получаем введенное пользователем выражение
     expression = message.text.replace('/calculate', '').strip()
