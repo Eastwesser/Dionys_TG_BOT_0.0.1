@@ -1,8 +1,6 @@
-import ast
 import random
 
 from aiogram import Router, Bot, F
-from aiogram import types
 from aiogram.enums.dice_emoji import DiceEmoji
 from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import Message
@@ -38,15 +36,24 @@ async def play_games1(message: Message):
     x = await message.answer_dice(DiceEmoji.DICE)
     print(x.dice.value)
 
+
+@router.message(F.text == "casino")
+async def play_games1(message: Message):
+    x = await message.answer_dice(DiceEmoji.SLOT_MACHINE)
+    print(x.dice.value)
+
+
 @router.message(F.text == "dart")
 async def play_games2(message: Message):
     x = await message.answer_dice(DiceEmoji.DART)
     print(x.dice.value)
 
+
 @router.message(F.text == "basketball")
 async def play_games2(message: Message):
     x = await message.answer_dice(DiceEmoji.BASKETBALL)
     print(x.dice.value)
+
 
 @router.message(F.text == "football")
 async def play_games2(message: Message):
@@ -79,6 +86,7 @@ async def calculate(message: types.Message):
     # Отправляем результат пользователю
     await message.reply(f"Ваш результат: {result}")
 '''
+
 
 @router.message(Command("test"))
 async def test(message: Message, bot: Bot):
