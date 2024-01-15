@@ -33,12 +33,28 @@ async def play_games(message: Message):
     print(x.dice.value)
 
 
-@router.message(F.text == "play1")
+@router.message(F.text == "dice")
 async def play_games1(message: Message):
     x = await message.answer_dice(DiceEmoji.DICE)
     print(x.dice.value)
 
+@router.message(F.text == "dart")
+async def play_games2(message: Message):
+    x = await message.answer_dice(DiceEmoji.DART)
+    print(x.dice.value)
 
+@router.message(F.text == "basketball")
+async def play_games2(message: Message):
+    x = await message.answer_dice(DiceEmoji.BASKETBALL)
+    print(x.dice.value)
+
+@router.message(F.text == "football")
+async def play_games2(message: Message):
+    x = await message.answer_dice(DiceEmoji.FOOTBALL)
+    print(x.dice.value)
+
+
+'''
 @router.message(Command(commands=['calculate']))
 async def calculate_expression(expression):
     try:
@@ -62,7 +78,7 @@ async def calculate(message: types.Message):
 
     # Отправляем результат пользователю
     await message.reply(f"Ваш результат: {result}")
-
+'''
 
 @router.message(Command("test"))
 async def test(message: Message, bot: Bot):
