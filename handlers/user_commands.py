@@ -1,10 +1,13 @@
+import json
 import random
 
-from aiogram import Router, Bot, F
+from aiogram import Router, Bot, F, types
 from aiogram.enums.dice_emoji import DiceEmoji
 from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import Message
+from aiogram.utils.markdown import hbold, hlink
 
+from bot import collect_data
 from keyboards import reply
 
 router = Router()
@@ -61,7 +64,71 @@ async def play_games2(message: Message):
     print(x.dice.value)
 
 
+# ======================================================================================================================
+# PYTHON PARSING BOT FOR CS GO
+# ======================================================================================================================
+@router.message(Command(commands='start_cs'))
+async def start_cs(message: types.Message):
+    start_buttons = ['нож', 'снайпер']
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*start_buttons)
+
+    await message.answer('Выберите категорию', reply_markup=keyboard)
+
+
+@router.message(F.text == 'нож')
+async def get_discount_knives(message: types.Message):
+    await message.answer('Please waiting...')
+
+    collect_data(cat_type=2)
+
+    with open('rezult.json') as file:
+        data = json.load(file)
+
+    for index, item in enumerate(data):
+        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
+               f'{hbold("Скидка: ")}{item.get("overprice")}%\n' \
+               f'{hbold("Цена: ")}${item.get("item_price")}🔥'
+
+        await message.answer(card)
+
+
+@router.message(F.text == 'снайпер')
+async def get_discount_guns(message: types.Message):
+    await message.answer('Please waiting...')
+
+    collect_data(cat_type=4)
+
+    with open('rezult.json') as file:
+        data = json.load(file)
+
+    for index, item in enumerate(data):
+        card = f'{hlink(item.get("full_name"), item.get("3d"))}\n' \
+               f'{hbold("Скидка: ")}{item.get("overprice")}%\n' \
+               f'{hbold("Цена: ")}${item.get("item_price")}🔥'
+
+        await message.answer(card)
+
+
+# ======================================================================================================================
 '''
+@router.message(F.text.one_of(["play", "dice", "casino", "dart", "basketball", "football"]))
+async def play_games(message: Message):
+    game_mapping = {
+        "play": DiceEmoji.BOWLING,
+        "dice": DiceEmoji.DICE,
+        "casino": DiceEmoji.SLOT_MACHINE,
+        "dart": DiceEmoji.DART,
+        "basketball": DiceEmoji.BASKETBALL,
+        "football": DiceEmoji.FOOTBALL
+    }
+    command = message.text.lower()
+
+    x = await message.answer_dice(game_mapping[command])
+    print(x.dice.value)
+
+
+
 @router.message(Command(commands=['calculate']))
 async def calculate_expression(expression):
     try:
@@ -87,6 +154,8 @@ async def calculate(message: types.Message):
     await message.reply(f"Ваш результат: {result}")
 '''
 
+
+# ======================================================================================================================
 
 @router.message(Command("test"))
 async def test(message: Message, bot: Bot):
