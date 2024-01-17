@@ -7,7 +7,7 @@ from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import Message
 from aiogram.utils.markdown import hbold, hlink
 
-from bot import collect_data
+# from bot import collect_data
 from keyboards import reply
 
 router = Router()
@@ -63,7 +63,7 @@ async def play_games2(message: Message):
     x = await message.answer_dice(DiceEmoji.FOOTBALL)
     print(x.dice.value)
 
-
+'''
 # ======================================================================================================================
 # PYTHON PARSING BOT FOR CS GO
 # ======================================================================================================================
@@ -111,6 +111,7 @@ async def get_discount_guns(message: types.Message):
 
 
 # ======================================================================================================================
+'''
 '''
 @router.message(F.text.one_of(["play", "dice", "casino", "dart", "basketball", "football"]))
 async def play_games(message: Message):
