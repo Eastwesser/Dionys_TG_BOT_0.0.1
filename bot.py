@@ -70,7 +70,7 @@ def collect_data(cat_type=2):
     with open('result.json', 'w') as file:
         json.dump(result, file, indent=4, ensure_ascii=True)
 
-    print(len(rezult))
+    print(len(result))
 '''
 
 async def main():
